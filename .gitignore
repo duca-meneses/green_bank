@@ -68,6 +68,8 @@ db.sqlite3-journal
 # Flask stuff:
 instance/
 .webassets-cache
+# sqlite3
+database.db
 
 # Scrapy stuff:
 .scrapy
@@ -175,7 +177,7 @@ pyrightconfig.json
 
 ### VisualStudioCode ###
 .vscode/*
-!.vscode/settings.json
+.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
