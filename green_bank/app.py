@@ -1,11 +1,9 @@
-from flask import jsonify
-from flask_openapi3 import Info, OpenAPI, Tag
+from flask import Flask
 
-info = Info(title='Green Bank API', version='1.0.0')
-app = OpenAPI(__name__, info=info, doc_prefix='/docs')
+from green_bank.api import routers
 
 
-@app.get('/', summary='Check health', tags=[Tag(name='Health Check')])
-def check_heath():
-    return jsonify({'status': 'ok'})
+app = Flask(__name__)
 
+
+app.register_blueprint(routers.api_router)
