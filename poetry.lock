@@ -208,50 +208,6 @@ async = ["asgiref (>=3.2)"]
 dotenv = ["python-dotenv"]
 
 [[package]]
-name = "flask-openapi3"
-version = "4.0.3"
-description = "Generate REST API and OpenAPI documentation for your Flask project."
-optional = false
-python-versions = ">=3.8"
-groups = ["main"]
-files = [
-    {file = "flask_openapi3-4.0.3-py3-none-any.whl", hash = "sha256:a05312a238bac25d35d6d20ec09d2e78c7a6ff85d453d26faba546c91895e661"},
-    {file = "flask_openapi3-4.0.3.tar.gz", hash = "sha256:e7932284263083eeb1f35c6657f6a4d1bb98be76f18f0509bd230e67f9854467"},
-]
-
-[package.dependencies]
-flask = ">=2.0"
-flask-openapi3-swagger = {version = "*", optional = true, markers = "extra == \"swagger\""}
-pydantic = ">=2.4"
-
-[package.extras]
-async = ["asgiref (>=3.2)"]
-dotenv = ["python-dotenv"]
-elements = ["flask-openapi3-elements"]
-email = ["email-validator"]
-rapidoc = ["flask-openapi3-rapidoc"]
-rapipdf = ["flask-openapi3-rapipdf"]
-redoc = ["flask-openapi3-redoc"]
-scalar = ["flask-openapi3-scalar"]
-swagger = ["flask-openapi3-swagger"]
-yaml = ["pyyaml"]
-
-[[package]]
-name = "flask-openapi3-swagger"
-version = "5.18.2"
-description = "Provide Swagger UI for flask-openapi3."
-optional = false
-python-versions = ">=3.8"
-groups = ["main"]
-files = [
-    {file = "flask_openapi3_swagger-5.18.2-py3-none-any.whl", hash = "sha256:f8178f77e225211b6a0189a6764c8070417712fc67d0a292c3c7892374b64c9e"},
-    {file = "flask_openapi3_swagger-5.18.2.tar.gz", hash = "sha256:3ac546bc1ce6b81f2a4585c2b7a9d4b7746a76826cb9b374adfdf8b70a6e0d31"},
-]
-
-[package.dependencies]
-flask-openapi3 = "*"
-
-[[package]]
 name = "greenlet"
 version = "3.1.1"
 description = "Lightweight in-process concurrent programming"
@@ -958,5 +914,5 @@ watchdog = ["watchdog (>=2.3)"]
 
 [metadata]
 lock-version = "2.1"
-python-versions = ">=3.12.* <4.0.*"
-content-hash = "9e50bdfde46e4a368b711566aaedc2c5bd18dd558d3883d11ad6c0514abbfc9e"
+python-versions = ">=3.12,<4.0"
+content-hash = "a8e7bb5d909b6a5616ee8f9c8e743adf2b447f3c66cf2fc503da0ed88dafd424"
