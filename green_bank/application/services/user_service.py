@@ -1,6 +1,9 @@
+from http import HTTPStatus
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+from green_bank.application.errors.green_bank_exception import GreenBankBasicException
 from green_bank.application.validators.document_validate import validar_cnpj, validar_cpf
+from green_bank.application.validators.email_validate import email_validate
 from green_bank.domain.model.user import DocumentType, User, UserType
 from green_bank.infra.database import get_session
 
@@ -11,6 +14,10 @@ class UserService():
 
     
     def create_user(self, user):
+
+        if not self.__is_email_valid(user['email']):
+            raise GreenBankBasicException('Invalid email', HTTPStatus.BAD_REQUEST)
+        
         db_user = self.session.scalar(
             select(User).where(
                 (User.email == user['email']) | 
@@ -18,10 +25,10 @@ class UserService():
             )   
         )
         if db_user:
-            raise ValueError('User already exists')
+            raise GreenBankBasicException('User already exists', HTTPStatus.CONFLICT)
 
         if not validar_cpf(user['document_number']) | validar_cnpj(user['document_number']):
-            raise ValueError('Invalid document number')
+            raise GreenBankBasicException('Invalid document number')
 
         
         db_user = User(
@@ -48,7 +55,7 @@ class UserService():
     def get_user(self, user_id):
         db_user = self.session.scalar(select(User).where(User.id == user_id))
         if not db_user:
-            raise ValueError('User not found')
+            raise GreenBankBasicException('User not found', HTTPStatus.NOT_FOUND)
 
         print(db_user)
         
@@ -58,7 +65,7 @@ class UserService():
         db_user = self.session.scalar(select(User).where(User.id == user_id))
 
         if not db_user:
-            raise ValueError('User not found')
+            raise GreenBankBasicException('User not found', HTTPStatus.NOT_FOUND)
 
         db_user.name = user['name']
         db_user.email = user['email']
@@ -71,6 +78,8 @@ class UserService():
 
     def delete_user(self, user_id):
         db_user = self.session.scalar(select(User).where(User.id == user_id))
+        if not db_user:
+            raise GreenBankBasicException('User not found', HTTPStatus.NOT_FOUND)
         self.session.delete(db_user)
         self.session.commit()
         
@@ -80,5 +89,10 @@ class UserService():
             return (UserType.RETAILER, DocumentType.CNPJ) 
         if validar_cpf(document_number):
             return (UserType.CUSTOMER, DocumentType.CPF)
+
+    def __is_email_valid(self, email):
+        if len(email) >= 10 and email_validate(email):
+            return True
+        
 
 user_service = UserService()
