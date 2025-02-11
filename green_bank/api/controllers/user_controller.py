@@ -1,17 +1,15 @@
 from http import HTTPStatus
-import pdb
-from uuid import uuid4
+
 from flask import request
 from flask.blueprints import Blueprint
 
 from green_bank.application.services.user_service import user_service
 
-
 app = Blueprint('user', __name__, url_prefix='/api/users')
 
 
 @app.route('/', methods=['POST'])
-def create_user(): 
+def create_user():
     data = request.json
     user = user_service.create_user(user=data)
     response = {
@@ -31,7 +29,7 @@ def list_users():
     response = []
     if len(users) == 0:
         return response, HTTPStatus.OK
-    
+
     for user in users:
         response.append({
             "id": user.id,
@@ -42,7 +40,7 @@ def list_users():
             "wallet_balance": user.wallet_balance,
             "created": user.created,
         })
-    return response, HTTPStatus.OK
+    return {'users': response}, HTTPStatus.OK
 
 @app.route('/<uuid:user_id>', methods=['GET'])
 def get_user(user_id):

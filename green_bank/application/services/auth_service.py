@@ -1,4 +1,5 @@
 from http import HTTPStatus
+
 from flask_jwt_extended import create_access_token
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -6,7 +7,6 @@ from sqlalchemy.orm import Session
 from green_bank.application.errors.green_bank_exception import GreenBankBasicException
 from green_bank.domain.model.user import User
 from green_bank.infra.database import get_session
-
 
 
 class AuthService:
@@ -22,7 +22,10 @@ class AuthService:
         )
 
         if not db_user:
-            raise GreenBankBasicException("Bad email or password", HTTPStatus.UNAUTHORIZED)
+            raise GreenBankBasicException(
+                "Bad email or password",
+                HTTPStatus.UNAUTHORIZED
+            )
 
         access_token = create_access_token(identity=db_user.email)
 

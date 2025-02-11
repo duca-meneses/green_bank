@@ -6,7 +6,6 @@ from green_bank.application.errors.green_bank_exception import GreenBankBasicExc
 from green_bank.application.errors.handler.error_handling import error_handling
 from green_bank.infra.settings import Settings
 
-
 app = Flask(__name__)
 jwt = JWTManager(app)
 

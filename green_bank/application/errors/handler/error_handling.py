@@ -1,4 +1,5 @@
 from flask.blueprints import Blueprint
+
 from green_bank.application.errors.green_bank_exception import GreenBankBasicException
 
 app = Blueprint('error_handling', __name__)
