@@ -4,6 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from green_bank.application.errors.green_bank_exception import GreenBankBasicException
+from green_bank.application.schemas.user_schema import UpdateUserSchema, UserSchema
 from green_bank.application.validators.document_validate import (
     validar_cnpj,
     validar_cpf,
@@ -11,6 +12,7 @@ from green_bank.application.validators.document_validate import (
 from green_bank.application.validators.email_validate import email_validate
 from green_bank.domain.model.user import DocumentType, User, UserType
 from green_bank.infra.database import get_session
+from green_bank.infra.security import bcrypt
 
 
 class UserService():
@@ -19,9 +21,6 @@ class UserService():
 
 
     def create_user(self, user):
-
-        if not self.__is_email_valid(user['email']):
-            raise GreenBankBasicException('Invalid email', HTTPStatus.BAD_REQUEST)
 
         db_user = self.session.scalar(
             select(User).where(
@@ -42,7 +41,7 @@ class UserService():
             name=user['name'],
             email=user['email'],
             document_number=user['document_number'],
-            password=user['password'],
+            password=bcrypt.generate_password_hash(user['password']),
             wallet_balance=user['wallet_balance']
         )
         validate_user_type = self.__is_retailer_or_customer(user['document_number'])
@@ -52,22 +51,26 @@ class UserService():
         self.session.commit()
         self.session.refresh(db_user)
 
-        return db_user
+        user_schema = UserSchema()
+        user = user_schema.dump(db_user)
+
+        return user
 
 
     def get_users(self,):
         db_users = self.session.scalars(select(User))
-        users = [user for user in db_users]
+        users_schema = UserSchema(many=True)
+        users = users_schema.dump(db_users)
         return users
 
     def get_user(self, user_id):
         db_user = self.session.scalar(select(User).where(User.id == user_id))
         if not db_user:
             raise GreenBankBasicException('User not found', HTTPStatus.NOT_FOUND)
+        user_schema = UserSchema()
+        user = user_schema.dump(db_user)
 
-        print(db_user)
-
-        return db_user
+        return user
 
     def update_user(self, user_id, user):
         db_user = self.session.scalar(select(User).where(User.id == user_id))
@@ -81,7 +84,10 @@ class UserService():
         self.session.commit()
         self.session.refresh(db_user)
 
-        return db_user
+        user_schema = UpdateUserSchema()
+        user = user_schema.dump(db_user)
+
+        return user
 
 
     def delete_user(self, user_id):
