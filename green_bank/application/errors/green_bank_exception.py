@@ -9,7 +9,7 @@ class GreenBankBasicException(Exception):
         self.payload = payload
 
     def to_dict(self):
-        rv = dict(self.payload or ())
-        rv['message'] = self.message
-        return rv
+        gbe = dict(self.payload or ())
+        gbe['errors'] = {'message': self.message}
+        return gbe
 
