@@ -9,7 +9,7 @@ from green_bank.application.errors.green_bank_exception import GreenBankBasicExc
 from green_bank.application.schemas.transaction_schema import CreateTransactionSchema
 from green_bank.application.services.transaction_service import transaction_service
 
-transaction = Blueprint('transaction', __name__, url_prefix='/transactions')
+transaction = Blueprint('transaction', __name__, url_prefix='/api/transactions')
 
 
 @transaction.route('/transfer', methods=['POST'])
@@ -31,5 +31,5 @@ def get_transactions():
 
 @transaction.route('/<uuid:transaction_id>', methods=['GET'])
 def get_transaction(transaction_id: UUID):
-    transaction = transaction_service.get_transaction(transaction_id)
+    transaction = transaction_service.get_transaction_by_id(transaction_id)
     return transaction, HTTPStatus.OK

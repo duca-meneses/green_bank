@@ -12,6 +12,7 @@ class UserTransactionSchema(Schema):
     name = fields.String()
 
 class TransactionSchema(Schema):
+    id = fields.UUID()
     value = fields.Decimal()
     payer = fields.Nested(UserTransactionSchema)
     payee = fields.Nested(UserTransactionSchema)
