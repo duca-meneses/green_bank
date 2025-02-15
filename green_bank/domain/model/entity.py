@@ -9,7 +9,7 @@ table_registry = registry()
 class Base:
 
     id: Mapped[uuid.UUID] = mapped_column(
-        init=False, primary_key=True, default=uuid.uuid4()
+        init=False, primary_key=True, default_factory=uuid.uuid4
     )
     created: Mapped[datetime] = mapped_column(init=False, server_default=func.now())
     updated: Mapped[datetime] = mapped_column(
