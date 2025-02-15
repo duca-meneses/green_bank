@@ -16,8 +16,8 @@ from green_bank.infra.security import bcrypt
 
 
 class UserService():
-    def __init__(self, session: Session=get_session()):
-        self.session = next(session)
+    def __init__(self, session: Session= None):
+        self.session = session or get_session().__enter__()
 
 
     def create_user(self, user):
