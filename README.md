@@ -66,5 +66,13 @@ Green Bank é uma aplicação de exemplo para gerenciamento de usuários e trans
 - `PUT /api/users/<uuid:user_id>`: Atualiza um usuário pelo ID.
 - `DELETE /api/users/<uuid:user_id>`: Deleta um usuário pelo ID.
 
+### Transaction
+- `POST /api/transaction/transfer`: cria uma transferência
+- `GET /api/transaction/`: Listar todas as transações
+    - `GET /api/transaction/?payer_name=jane%20doe`: Filtra todas as transações do pagador
+    - `GET /api/transaction/?payee_name=jane%20doe`: Filtra todas as transações do recebedor
+- `GET /api/transaction/<uuid:transaction_id>`: Obtém uma transação pelo id
+
+
 ### Health Check
 - `GET /`: Verifica a saúde da aplicação.
