@@ -10,6 +10,10 @@ class UserSchema(Schema):
     created = fields.DateTime(required=True)
 
 
+class listUserSchema(Schema):
+    users = fields.List(fields.Nested(UserSchema), required=True)
+
+
 class CreateUserSchema(Schema):
     name = fields.String(required=True)
     email = fields.Email(required=True)
