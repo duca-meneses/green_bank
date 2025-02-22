@@ -1,8 +1,24 @@
 from flask import Blueprint
 
-health_check = Blueprint('health_check', __name__, url_prefix='/')
+from green_bank.application.schemas.message import HealthCheckSchema
+
+hc = Blueprint('health_check', __name__, url_prefix='/')
 
 
-@health_check.route('', methods=['GET'])
+@hc.route('', methods=['GET'])
 def verify_health_check():
-    return {'status': 'ok'}
+    ''' Health Check
+    ---
+    get:
+      tags:
+        - health check
+      summary: Health Check of application
+      description: Health Check of application
+      responses:
+        200:
+          description: api is running
+          content:
+            application/json:
+              schema: HealthCheckSchema
+    '''
+    return HealthCheckSchema().dump({"status": "Green Bank API is running"}), 200

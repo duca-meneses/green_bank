@@ -14,6 +14,42 @@ bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 
 @bp.route("/login", methods=["POST"])
 def login():
+    '''Login
+    ---
+    post:
+      tags:
+        - auth
+      summary: Make Login in application
+      description: Make Login in application
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: CreateLoginSchema
+      responses:
+        200:
+          description: Login successful
+          content:
+            application/json:
+              schema: TokenSchema
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema: ErrorSchema
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema: ErrorSchema
+        422:
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema: ErrorSchema
+
+    '''
+
     login_schema = CreateLoginSchema()
     try:
         data = login_schema.load(request.json)
@@ -24,8 +60,52 @@ def login():
     return access_token, HTTPStatus.OK
 
 
-@bp.route("/<uuid:user_id>/change-password", methods=["Patch"])
+@bp.route("/<uuid:user_id>/change-password", methods=["POST"])
 def change_password(user_id):
+    '''Change password
+    ---
+    post:
+      tags:
+        - auth
+      summary: Change password
+      description: Change password
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          description: User ID
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: PasswordChangeSchema
+      responses:
+        200:
+          description: Password changed successfully
+          content:
+            application/json:
+              schema: MessageSchema
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema: ErrorSchema
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema: ErrorSchema
+        422:
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema: ErrorSchema
+
+    '''
+
     password_schema = PasswordChangeSchema()
     try:
         data = password_schema.load(request.json)
@@ -38,6 +118,6 @@ def change_password(user_id):
     except ValidationError as error:
         raise GreenBankBasicException(error.messages, HTTPStatus.UNPROCESSABLE_ENTITY)
 
-    auth_service.change_password(user_id, data)
+    response = auth_service.change_password(user_id, data)
 
-    return {'message': 'Password changed successfully'}, HTTPStatus.OK
+    return response, HTTPStatus.OK
