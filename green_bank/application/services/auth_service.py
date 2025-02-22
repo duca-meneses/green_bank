@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 from green_bank.application.errors.green_bank_exception import GreenBankBasicException
 from green_bank.application.schemas.auth_schema import TokenSchema
+from green_bank.application.schemas.message import MessageSchema
 from green_bank.domain.model.user import User
 from green_bank.infra.database import get_session
 from green_bank.infra.security import bcrypt
@@ -54,6 +55,10 @@ class AuthService:
         user.password = bcrypt.generate_password_hash(data["new_password"])
 
         self.session.commit()
+
+        message = MessageSchema().dump({"message": "Password changed successfully"})
+
+        return message
 
     def __verify_password(self, password_hash, password_raw):
         return bcrypt.check_password_hash(password_hash, password_raw)
