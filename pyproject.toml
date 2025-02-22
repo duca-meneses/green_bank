@@ -17,6 +17,8 @@ dependencies = [
     "flask-jwt-extended",
     "flask-marshmallow",
     "flask-bcrypt",
+    "apispec[marshmallow]",
+    "apispec-webframeworks (>=1.2.0,<2.0.0)",
 ]
 
 
