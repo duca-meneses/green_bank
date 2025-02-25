@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
 from flask_marshmallow import Marshmallow
+from flask_swagger_ui import get_swaggerui_blueprint
 
 from green_bank.api.routers import api_router, spec
 from green_bank.api.spec import register_routes_with_spec
@@ -31,6 +32,18 @@ def create_app():
     def swagger():
 
         return spec.to_dict()
+
+
+    SWAGGER_URL = Settings().SWAGGER_UI_URL
+    API_DOCS_URL = Settings().API_DOC_URL
+
+    swagger_ui_blueprint = get_swaggerui_blueprint(
+        SWAGGER_URL,
+        API_DOCS_URL,
+        config={'app_name': Settings().API_TITLE}
+    )
+
+    app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
 
 
     return app

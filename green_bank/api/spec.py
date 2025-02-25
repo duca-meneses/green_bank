@@ -3,6 +3,8 @@ from apispec.ext.marshmallow import MarshmallowPlugin
 from apispec_webframeworks.flask import FlaskPlugin
 from flask import Flask
 
+from green_bank.infra.settings import Settings
+
 tags = [
     {'name': 'auth', 'description': 'Operations related to authentication'},
     {'name': 'health check', 'description': 'Operations related to health check'},
@@ -10,14 +12,20 @@ tags = [
     {'name': 'transactions', 'description': 'Operations related to transactions'},
 ]
 spec = APISpec(
-    title='Green Bank API',
+    title=Settings().API_TITLE,
     version='1.0.0',
     openapi_version='3.0.2',
     plugins=[FlaskPlugin(), MarshmallowPlugin()],
     tags = tags,
 )
 
-api_key_scheme = {'type': 'apiKey', 'in': 'header', 'name': 'X-API-Key'}
+api_key_scheme = {
+    'type': 'http',
+    'in': 'header',
+    'scheme': 'bearer',
+    'bearerFormat': 'JWT',
+    'description': 'Enter your JWT token in the format.'
+        'Example: `value: <your-token>`'}
 
 def register_routes_with_spec(app: Flask):
     '''Registra todas as rotas do Flask no `spec`'''
