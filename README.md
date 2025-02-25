@@ -73,6 +73,12 @@ Green Bank é uma aplicação de exemplo para gerenciamento de usuários e trans
     - `GET /api/transaction/?payee_name=jane%20doe`: Filtra todas as transações do recebedor
 - `GET /api/transaction/<uuid:transaction_id>`: Obtém uma transação pelo id
 
-
 ### Health Check
 - `GET /`: Verifica a saúde da aplicação.
+
+## Swagger-UI
+
+Esse é o swagger-ui gerado pela api
+
+![Swagger da Api](docs/image.png)
+
