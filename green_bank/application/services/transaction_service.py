@@ -1,5 +1,6 @@
 from uuid import UUID
 
+from flask_jwt_extended import jwt_required
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -14,6 +15,7 @@ class TransactionService:
     def __init__(self, session: Session = None):
         self.session = session or get_session().__enter__()
 
+    jwt_required()
     def create_transaction(self, transaction: dict):
         '''
         Creates a transaction between a payer and a payee.
@@ -80,6 +82,7 @@ class TransactionService:
                 }
             )
 
+    jwt_required()
     def list_transactions(self, payer_name: str = None, payee_name: str = None):
         '''
         Fetches all transactions from the database.
@@ -122,6 +125,7 @@ class TransactionService:
 
         return transaction_schema.dump(list_schema)
 
+    jwt_required()
     def get_transaction_by_id(self, transaction_id: UUID):
         '''
         Fetches a transaction from the database.

@@ -63,6 +63,8 @@ def list_users():
     '''List all users
     ---
     get:
+      security:
+        - APIKeyAuth: []
       tags:
         - users
       summary: List all users
@@ -73,6 +75,16 @@ def list_users():
           content:
             application/json:
               schema: ListUserSchema
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example: Missing Authorization Header
 
     '''
     users = user_service.get_users()
@@ -83,6 +95,8 @@ def get_user(user_id):
     '''Get user by id
     ---
     get:
+      security:
+        - APIKeyAuth: []
       tags:
         - users
       summary: Get user by ID
@@ -101,6 +115,16 @@ def get_user(user_id):
           content:
             application/json:
               schema: UserSchema
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example: Missing Authorization Header
         404:
           description: User not found
           content:
@@ -115,6 +139,8 @@ def update_user(user_id):
     '''Update user by id
     ---
     put:
+      security:
+        - APIKeyAuth: []
       tags:
         - users
       summary: Update user by ID
@@ -143,6 +169,16 @@ def update_user(user_id):
           content:
             application/json:
               schema: ErrorSchema
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example: Missing Authorization Header
         404:
           description: User not found
           content:
@@ -169,6 +205,8 @@ def delete_user(user_id):
     '''Delete user by id
     ---
     delete:
+      security:
+        - APIKeyAuth: []
       tags:
         - users
       summary: Delete user by ID
@@ -184,6 +222,16 @@ def delete_user(user_id):
       responses:
         204:
           description: User deleted successfully
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example: Missing Authorization Header
         404:
           description: User not found
           content:

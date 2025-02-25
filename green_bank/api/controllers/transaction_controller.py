@@ -17,6 +17,8 @@ def create_transfer():
     '''Create a new transaction
     ---
     post:
+      security:
+        - APIKeyAuth: []
       tags:
         - transactions
       summary: Create a new transaction
@@ -37,6 +39,16 @@ def create_transfer():
           content:
             application/json:
               schema: ErrorSchema
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example: Missing Authorization Header
         409:
           description: Conflict
           content:
@@ -62,10 +74,13 @@ def list_transactions():
     '''List transactions
     ---
     get:
+      security:
+        - APIKeyAuth: []
       tags:
         - transactions
       summary: List transactions
-      description: Retrieve a list of transactions, optionally filtering by payer or payee name.
+      description: Retrieve a list of transactions,
+        optionally filtering by payer or payee name.
       parameters:
         - name: payer_name
           in: query
@@ -91,6 +106,16 @@ def list_transactions():
                     type: array
                     items:
                       $ref: "#/components/schemas/TransactionSchema"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example: Missing Authorization Header
     '''
     payer_name = request.args.get('payer_name', '')
     payee_name = request.args.get('payee_name', '')
@@ -108,6 +133,8 @@ def get_transaction(transaction_id: UUID):
     '''Get a transaction by id
     ---
     get:
+      security:
+        - APIKeyAuth: []
       tags:
         - transactions
       summary: Get a transaction by id
@@ -126,6 +153,16 @@ def get_transaction(transaction_id: UUID):
           content:
             application/json:
               schema: TransactionSchema
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example: Missing Authorization Header
         404:
           description: Transaction not found
           content:

@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -35,6 +35,7 @@ class AuthService:
 
         return token
 
+    @jwt_required()
     def change_password(self, user_id, data):
         user = self.session.scalar(
             select(User).where(User.id == user_id)

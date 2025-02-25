@@ -1,5 +1,6 @@
 from http import HTTPStatus
 
+from flask_jwt_extended import jwt_required
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -56,13 +57,14 @@ class UserService():
 
         return user
 
-
+    @jwt_required()
     def get_users(self,):
         db_users = self.session.scalars(select(User))
         users_schema = UserSchema(many=True)
         users = users_schema.dump(db_users)
         return users
 
+    @jwt_required()
     def get_user(self, user_id):
         db_user = self.session.scalar(select(User).where(User.id == user_id))
         if not db_user:
@@ -72,6 +74,7 @@ class UserService():
 
         return user
 
+    @jwt_required()
     def update_user(self, user_id, user):
         db_user = self.session.scalar(select(User).where(User.id == user_id))
 
@@ -89,7 +92,7 @@ class UserService():
 
         return user
 
-
+    @jwt_required()
     def delete_user(self, user_id):
         db_user = self.session.scalar(select(User).where(User.id == user_id))
         if not db_user:

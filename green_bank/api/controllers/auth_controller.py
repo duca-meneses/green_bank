@@ -65,6 +65,8 @@ def change_password(user_id):
     '''Change password
     ---
     post:
+      security:
+        - APIKeyAuth: []
       tags:
         - auth
       summary: Change password
@@ -93,6 +95,16 @@ def change_password(user_id):
           content:
             application/json:
               schema: ErrorSchema
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example: Missing Authorization Header
         404:
           description: Not Found
           content:
