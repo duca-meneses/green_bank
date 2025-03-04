@@ -15,8 +15,43 @@ spec = APISpec(
     title=Settings().API_TITLE,
     version='1.0.0',
     openapi_version='3.0.2',
+    info={
+        "x-summary": "Green Bank API - Sistema de Pagamentos Simplificado",
+        "description": """
+### Green Bank API
+O **Green Bank API** é um sistema de pagamentos simplificado que permite a realização de transferências entre usuários.
+
+#### 🔑 **Autenticação**
+- A autenticação é feita via **JWT Bearer Token**.
+
+#### 🔄 **Principais Operações**
+- 🆕 Criar usuários
+- 💸 Realizar transferências
+- 📜 Listar usuários e transações
+
+#### 🛠 **Tecnologias Utilizadas**
+- Flask 🚀
+- Flask-JWT-Extended 🔐
+- SQLAlchemy 🛢
+- Marshmallow 📝
+
+🔗 **Mais informações**:  
+[📂 GitHub - Green Bank](https://github.com/duca-meneses/green_bank)
+        """,
+        "termsOfService": "https://github.com/duca-meneses/green_bank/blob/main/README.md",
+        "contact": {
+            "name": "Carlos Eduardo Meneses",
+            "email": "ducameneses16@gmail.com",
+            "url": "https://github.com/duca-meneses",
+        },
+        "license": {
+            "name": "MIT License",
+            "url": "https://github.com/duca-meneses/green_bank",
+        },
+    },
+
     plugins=[FlaskPlugin(), MarshmallowPlugin()],
-    tags = tags,
+    tags=tags
 )
 
 api_key_scheme = {
